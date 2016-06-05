@@ -16,9 +16,14 @@ const toggle = store.actionize((next, getState) => (nextFlag) => {
 });
 
 const listener = sinon.spy();
-store.subscribe(listener);
+const unsubscribe = store.subscribe(listener);
 
 toggle(false);
 toggle(true);
+
+const truthyState = store.getState();
+unsubscribe();
+toggle(false);
+
 assert(listener.calledOnce);
-assert(listener.calledWith(store.getState()));
+assert(listener.calledWith(truthyState));
