@@ -18,14 +18,14 @@ export const createStore = (initialState) => {
     return state;
   };
 
-  const actionize = (action) => {
-    const next = (nextState) => {
-      if (state !== nextState) {
-        state = nextState;
-        emitter.emit(EVENT_NAME, state);
-      }
-    };
+  const next = (nextState) => {
+    if (state !== nextState) {
+      state = nextState;
+      emitter.emit(EVENT_NAME, state);
+    }
+  };
 
+  const actionize = (action) => {
     return action(next, getState);
   };
 

@@ -21,3 +21,4 @@ store.subscribe(listener);
 toggle(false);
 toggle(true);
 assert(listener.calledOnce);
+assert(listener.calledWith(store.getState()));
