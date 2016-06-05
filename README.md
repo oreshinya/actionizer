@@ -34,7 +34,7 @@ const count = store.actionize((next, getState) => (num) => {
 });
 
 // Subscribe store's change.
-store.subscribe((state) => {
+const unsubscribe = store.subscribe((state) => {
   console.log(`listener: ${state.get("counter")}`);
 });
 
@@ -42,4 +42,10 @@ count(100);
 
 // => listener: 100
 
+// Unsubscribe store's change.
+unsubscribe();
 ```
+
+## LICENSE
+
+MIT
