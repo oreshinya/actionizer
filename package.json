@@ -1,8 +1,11 @@
 {
   "name": "actionizer",
   "version": "0.0.1",
-  "description": "Simple pub/sub instead of redux.",
+  "description": "Simple pub/sub for data flow.",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "prepublish": "rm -rf lib && babel src -d lib",
     "test": "eater"
@@ -10,9 +13,7 @@
   "keywords": [
     "react",
     "flux",
-    "redux",
-    "architecture",
-    "dataflow"
+    "redux"
   ],
   "author": "oreshinya",
   "license": "MIT",
