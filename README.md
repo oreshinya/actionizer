@@ -1,4 +1,5 @@
 # Actionizer
+[![npm version](https://badge.fury.io/js/actionizer.svg)](https://badge.fury.io/js/actionizer)
 [![Build Status](https://travis-ci.org/oreshinya/actionizer.svg?branch=master)](https://travis-ci.org/oreshinya/actionizer)
 
 This is just pub/sub for data flow.
