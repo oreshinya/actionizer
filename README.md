@@ -49,3 +49,7 @@ unsubscribe();
 ## LICENSE
 
 MIT
+
+## TODO
+- Change interface using generator
+- Consider store management like a reducer
