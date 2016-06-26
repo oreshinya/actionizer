@@ -38,7 +38,7 @@ export const createStore = (initialState) => {
     emitter.emit(EMITTER_EVENT, state);
   };
 
-  const dispatch = (actionGenerator) => {
+  const dispatch = (action) => {
 
     const step = (result) => {
       const { done, value } = result;
@@ -48,20 +48,20 @@ export const createStore = (initialState) => {
       switch (value.type) {
         case PUT_ACTION_EVENT:
           setState(value.nextState);
-          step(actionGenerator.next(state));
+          step(action.next(state));
           break;
         case CALL_ACTION_EVENT:
           const promise = value.fn(...value.args);
           promise.then((val) => {
-            step(actionGenerator.next(val));
+            step(action.next(val));
           }).catch((e) => {
-            step(actionGenerator.throw(e));
+            step(action.throw(e));
           });
           break;
       }
     };
 
-    step(actionGenerator.next());
+    step(action.next());
   };
 
   return {
