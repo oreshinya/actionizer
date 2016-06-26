@@ -56,12 +56,10 @@ export const createStore = (initialState) => {
           step(action.next(state));
           break;
         case CALL_ACTION_EVENT:
-          const promise = value.fn(...value.args);
-          promise.then((val) => {
-            step(action.next(val));
-          }).catch((e) => {
-            step(action.throw(e));
-          });
+          value
+            .fn(...value.args)
+            .then((val) => { step(action.next(val)); })
+            .catch((e) => { step(action.throw(e)); });
           break;
       }
     };
