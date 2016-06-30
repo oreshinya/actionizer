@@ -61,6 +61,8 @@ export const createStore = (initialState) => {
             .then((val) => { step(action.next(val)); })
             .catch((e) => { step(action.throw(e)); });
           break;
+        default:
+          throw new Error('yield should receive "call" or "put".');
       }
     };
 
