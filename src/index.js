@@ -68,7 +68,7 @@ export const createStore = (initialState, notify = (emit) => { emit(); }) => {
             .catch((e) => { step(action.throw(e)); });
           break;
         default:
-          throw new Error('yield should receive "call" or "put".');
+          throw new Error('yield should receive "select", "call" or "put".');
       }
     };
 
