@@ -21,6 +21,9 @@
   ],
   "author": "oreshinya",
   "license": "MIT",
+  "peerDependencies": {
+    "babel-polyfill": "^6.9.1"
+  },
   "dependencies": {
     "eventemitter3": "^1.2.0"
   },
