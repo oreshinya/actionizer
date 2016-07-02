@@ -69,7 +69,7 @@ export const createStore = (initialState, notify = (emit) => { emit(); }) => {
             .catch((e) => { step(action.throw(e)); });
           break;
         default:
-          action.throw(new Error('yield should receive "select", "call" or "put".'));
+          step(action.throw(new Error('Received unknown command.')));
           break;
       }
     };
