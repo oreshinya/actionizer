@@ -1,5 +1,6 @@
 import EventEmitter from 'eventemitter3';
 
+
 const SELECT_ACTION_EVENT = 'ACTIONIZER.ACTION.SELECT';
 const PUT_ACTION_EVENT    = 'ACTIONIZER.ACTION.PUT';
 const CALL_ACTION_EVENT   = 'ACTIONIZER.ACTION.CALL';
