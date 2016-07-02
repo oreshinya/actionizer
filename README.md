@@ -36,7 +36,7 @@ const initialState = fromJS({
   }
 });
 
-// Customize notifier
+// Customize notifier.
 const notify = debounce((emit) => { emit(); });
 
 // Create a store, it treats all states for the app.
@@ -44,19 +44,19 @@ const store = createStore(initialState, notify);
 
 // Define an action.
 const count = function*(num) {
-  // Get current state
+  // Get current state.
   const state = yield select();
 
-  // Set next state
+  // Set next state.
   yield put(state.set("counter", num));
 }
 
-// API request
+// API request.
 const getItems = (id, field) => {
   return axios.get('/items', {id, field});
 };
 
-// Define an asynchronous action
+// Define an asynchronous action.
 const fetchItems = function*() {
   try {
     // "call" receives a function and arguments that returns a promise.
@@ -73,7 +73,8 @@ const unsubscribe = store.subscribe((state) => {
   console.log(`listener: ${state.get("counter")}`);
 });
 
-count(100);
+// Trigger an action.
+store.dispatch(count(100));
 
 // => listener: 100
 
