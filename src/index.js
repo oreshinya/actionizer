@@ -13,7 +13,7 @@ export const put = (nextState) => {
   return {type: PUT_ACTION_EVENT, nextState};
 };
 
-export const call = (fn, args) => {
+export const call = (fn, ...args) => {
   return {type: CALL_ACTION_EVENT, fn, args};
 };
 
@@ -69,7 +69,8 @@ export const createStore = (initialState, notify = (emit) => { emit(); }) => {
             .catch((e) => { step(action.throw(e)); });
           break;
         default:
-          throw new Error('yield should receive "select", "call" or "put".');
+          action.throw(new Error('yield should receive "select", "call" or "put".'));
+          break;
       }
     };
 
