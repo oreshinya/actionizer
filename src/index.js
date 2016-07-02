@@ -1,7 +1,12 @@
 import EventEmitter from 'eventemitter3';
 
-const PUT_ACTION_EVENT  = 'ACTIONIZER.ACTION.PUT';
-const CALL_ACTION_EVENT = 'ACTIONIZER.ACTION.CALL';
+const SELECT_ACTION_EVENT = 'ACTIONIZER.ACTION.SELECT';
+const PUT_ACTION_EVENT    = 'ACTIONIZER.ACTION.PUT';
+const CALL_ACTION_EVENT   = 'ACTIONIZER.ACTION.CALL';
+
+export const select = () => {
+  return {type: SELECT_ACTION_EVENT};
+};
 
 export const put = (nextState) => {
   return {type: PUT_ACTION_EVENT, nextState};
@@ -49,6 +54,9 @@ export const createStore = (initialState, notify = (emit) => { emit(); }) => {
       if (done) { return; }
 
       switch (value.type) {
+        case SELECT_ACTION_EVENT:
+          step(action.next(state));
+          break;
         case PUT_ACTION_EVENT:
           setState(value.nextState);
           step(action.next(state));
