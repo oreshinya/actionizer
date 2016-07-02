@@ -1,6 +1,4 @@
 import EventEmitter from 'eventemitter3';
-import debounce from 'lodash.debounce';
-
 
 const PUT_ACTION_EVENT  = 'ACTIONIZER.ACTION.PUT';
 const CALL_ACTION_EVENT = 'ACTIONIZER.ACTION.CALL';
@@ -16,7 +14,8 @@ export const call = (fn, args) => {
 
 const EMITTER_EVENT = 'ACTIONIZER.EMITTER.NOTIFY';
 
-export const createStore = (initialState) => {
+export const createStore = (initialState, notify = (emit) => { emit(); }) => {
+
   let state = initialState;
   const emitter = new EventEmitter();
 
@@ -28,10 +27,6 @@ export const createStore = (initialState) => {
     };
   };
 
-  const notify = debounce(() => {
-    emitter.emit(EMITTER_EVENT, state);
-  });
-
   const getState = () => {
     return state;
   };
@@ -40,7 +35,10 @@ export const createStore = (initialState) => {
     if (state === nextState) { return; }
 
     state = nextState;
-    notify();
+
+    notify(() => {
+      emitter.emit(EMITTER_EVENT, state);
+    });
   };
 
   const dispatch = (action) => {
