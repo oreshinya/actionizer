@@ -82,6 +82,9 @@ store.dispatch(count(100));
 unsubscribe();
 ```
 
+## Related projects
+- [react-actionizer](https://github.com/oreshinya/react-actionizer)
+
 ## LICENSE
 
 MIT
