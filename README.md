@@ -39,7 +39,7 @@ const initialState = fromJS({
 // Customize notifier.
 const notify = debounce((emit) => { emit(); });
 
-// Create a store, it treats all states for the app.
+// Create a store, it treats states for the app.
 const store = createStore(initialState, notify);
 
 // Define an action.
