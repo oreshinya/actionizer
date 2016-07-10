@@ -23,6 +23,7 @@ $ npm i --save actionizer
 ## Usage
 
 ```javascript
+import 'babel-polyfill';
 import axios from 'axios';
 import { fromJS } from 'immutable';
 import { createStore, select, call, put } from 'actionizer';
@@ -46,9 +47,9 @@ const store = createStore(initialState, notify);
 const count = function*(num) {
   // Get current state.
   const state = yield select();
-
+  const nextState = state.set("counter", num);
   // Set next state.
-  yield put(state.set("counter", num));
+  yield put(nextState);
 }
 
 // API request.
