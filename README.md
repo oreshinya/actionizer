@@ -121,7 +121,7 @@ And it returns unsubscriber.
 Trigger an action.
 In Actionizer, "Action" is a generator like:
 
-```
+```javascript
 // This is "Action Creator"
 const count = function*(num) {
   // Get current state.
