@@ -115,6 +115,7 @@ Create a store.
 ### Store API
 #### `subscribe(listener)`
 Register a listener of store's changes.
+And it returns unsubscriber.
 
 #### `dispatch(action)`
 Trigger an action.
