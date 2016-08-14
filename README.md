@@ -26,7 +26,14 @@ $ npm i --save actionizer
 import 'babel-polyfill';
 import axios from 'axios';
 import { fromJS } from 'immutable';
-import { createStore, select, call, put } from 'actionizer';
+import {
+  createStore,
+  select,
+  call,
+  put,
+  fork,
+  cancel
+} from 'actionizer';
 import debounce from 'lodash.debounce';
 
 const initialState = fromJS({
