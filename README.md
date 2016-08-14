@@ -43,7 +43,7 @@ const notify = debounce((emit) => { emit(); });
 // Create a store, it treats states for the app.
 const store = createStore(initialState, notify);
 
-// Define an action.
+// Define an action creator.
 const count = function*(num) {
   // Get current state.
   const state = yield select();
@@ -57,7 +57,7 @@ const getItems = (id, field) => {
   return axios.get('/items', {id, field});
 };
 
-// Define an asynchronous action.
+// Define an asynchronous action creator.
 const fetchItems = function*() {
   try {
     // "call" receives a function and arguments that returns a promise.
@@ -68,6 +68,13 @@ const fetchItems = function*() {
     // Do something...
   }
 };
+
+// Define a cancelable action creator.
+let actionId;
+const fetchItemsWithCancel = function*() {
+  yield cancel(actionId);
+  actionId = yield fork(fetchItems);
+}
 
 // Subscribe store's change.
 const unsubscribe = store.subscribe((state) => {
