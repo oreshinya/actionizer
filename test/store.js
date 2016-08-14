@@ -3,10 +3,11 @@ import { test } from 'eater/runner';
 import sinon from 'sinon';
 import { Map } from 'immutable';
 
-import { createStore, select, call, put } from '../src';
+import { createStore, select, call, put, cancel, fork } from '../src';
 
 const initialState = Map({
-  flag: false
+  flag: false,
+  count: 0
 });
 
 const store = createStore(initialState);
@@ -60,10 +61,23 @@ test('dispatch', () => {
     assert(state.get('childResult') === 'child');
   }
 
+  let actionId = null;
+  const countAction = function*() {
+    yield call(sleep);
+    let state = yield select();
+    state = yield put(state.set('count', state.get('count') + 1));
+    assert(state.get('count') === 1);
+  };
+  const takeLatestAction = function*() {
+    yield cancel(actionId);
+    actionId = yield fork(countAction);
+  }
+
   store.dispatch(asyncSuccess());
   store.dispatch(asyncFailure());
   store.dispatch(parentAction());
-
+  store.dispatch(takeLatestAction());
+  store.dispatch(takeLatestAction());
 });
 
 test('subscribe', () => {

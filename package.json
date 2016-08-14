@@ -25,7 +25,8 @@
     "babel-polyfill": "^6.9.1"
   },
   "dependencies": {
-    "eventemitter3": "^1.2.0"
+    "eventemitter3": "^1.2.0",
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
