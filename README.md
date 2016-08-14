@@ -47,10 +47,10 @@ const initialState = fromJS({
 // Customize notifier.
 const notify = debounce((emit) => { emit(); });
 
-// Create a store, it treats states for the app.
+// Create "Store", it treats states for the app.
 const store = createStore(initialState, notify);
 
-// Define an action creator.
+// Define "Action Creator".
 const count = function*(num) {
   // Get current state.
   const state = yield select();
@@ -64,23 +64,33 @@ const getItems = (id, field) => {
   return axios.get('/items', {id, field});
 };
 
-// Define an asynchronous action creator.
-const fetchItems = function*() {
+// Define asynchronous "Action Creator".
+const fetchItems = function*(id, field) {
   try {
     // "call" receives a function and arguments that returns a promise.
-    const result = yield call(getItems, '1,3,5,39', 'name,createdAt');
+    const result = yield call(getItems, id, field);
 
     // Do something...
   } catch(e) {
     // Do something...
   }
+}
+
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(() => { resolve(); }, ms);
+  });
 };
 
-// Define a cancelable action creator.
+// Define debounced "Action Creator".
+const debouncedFetchItems = function*(id) {
+  yield call(sleep, 1000);
+  yield* fetchItems(id);
+}
 let actionId;
-const fetchItemsWithCancel = function*() {
+const searchItemsById = function*(id) {
   yield cancel(actionId);
-  actionId = yield fork(fetchItems);
+  actionId = yield fork(debouncedFetchItems, id);
 }
 
 // Subscribe store's change.
@@ -96,6 +106,57 @@ store.dispatch(count(100));
 // Unsubscribe store's change.
 unsubscribe();
 ```
+
+## API
+### Top level API
+#### `createStore(initialState, notify)`
+Create a store.
+
+### Store API
+#### `subscribe(listener)`
+Register a listener of store's changes.
+
+#### `dispatch(action)`
+Trigger an action.
+In Actionizer, "Action" is a generator like:
+
+```
+// This is "Action Creator"
+const count = function*(num) {
+  // Get current state.
+  const state = yield select();
+  const nextState = state.set("counter", num);
+  // Set next state.
+  yield put(nextState);
+}
+
+// This is "Action"
+const action = count(1);
+```
+
+#### `getState()`
+Get store's state.
+
+### Effect API
+"Effects" return a payload used in "Action Creator".
+
+#### `select()`
+`select` returns store's current state.
+
+#### `put(nextState)`
+`put` sets next state to store and returns it.
+
+#### `call(fn, ...args)`
+`call` calls `fn` with `args`.
+`fn` should return `Promise`.
+`call` returns resolved value.
+
+#### `fork(actionCreator, ...args)`
+`fork` calls an action without blocking and returns action id.
+Action id is unique.
+
+#### `cancel(actionId)`
+`cancel` cancels action by action id.
 
 ## Related projects
 - [react-actionizer](https://github.com/oreshinya/react-actionizer)
