@@ -67,7 +67,7 @@ test('dispatch', () => {
     let state = yield select();
     state = yield put(state.set('count', state.get('count') + 1));
     assert(state.get('count') === 1);
-  };
+  }
   const takeLatestAction = function*() {
     yield cancel(actionId);
     actionId = yield fork(countAction);
