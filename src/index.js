@@ -94,7 +94,7 @@ export const createStore = (initialState, notify = (emit) => { emit(); }) => {
             processes[value.actionId].return();
             delete processes[value.actionId];
           }
-          step(action.next(value.actionId));
+          step(action.next());
           break;
         default:
           step(action.throw(new Error('Received unknown command.')));
