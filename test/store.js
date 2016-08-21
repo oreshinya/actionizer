@@ -3,7 +3,8 @@ import { test } from 'eater/runner';
 import sinon from 'sinon';
 import { Map } from 'immutable';
 
-import { createStore, select, call, put, cancel, fork } from '../src';
+import { createStore } from '../src';
+import { select, call, put, cancel, fork } from '../src/commands';
 
 const initialState = Map({
   flag: false,
