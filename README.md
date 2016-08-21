@@ -141,8 +141,8 @@ Get store's state.
 ### Effect API
 "Effects" return a payload used in "Action Creator".
 
-#### `select()`
-`select` returns store's current state.
+#### `select(selector = (state) => state)`
+`select` calls `selector` with current state, and return `selector` result.
 
 #### `put(nextState)`
 `put` sets next state to store and returns it.
