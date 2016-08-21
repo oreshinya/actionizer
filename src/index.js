@@ -8,8 +8,8 @@ const CALL_ACTION_EVENT   = 'ACTIONIZER.ACTION.CALL';
 const FORK_ACTION_EVENT   = 'ACTIONIZER.ACTION.FORK';
 const CANCEL_ACTION_EVENT = 'ACTIONIZER.ACTION.CANCEL';
 
-export const select = () => {
-  return {type: SELECT_ACTION_EVENT};
+export const select = (selector = (state) => state) => {
+  return {type: SELECT_ACTION_EVENT, selector};
 };
 
 export const put = (nextState) => {
@@ -74,7 +74,7 @@ export const createStore = (initialState, notify = (emit) => { emit(); }) => {
 
       switch (value.type) {
         case SELECT_ACTION_EVENT:
-          step(action.next(state));
+          step(action.next(value.selector(state)));
           break;
         case PUT_ACTION_EVENT:
           setState(value.nextState);
