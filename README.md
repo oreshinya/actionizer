@@ -4,11 +4,22 @@
 
 This is just pub/sub for data flow like Redux.
 
-## Concepts
+## Overview
 
-- **Less defination**
-- **Easy to test**
-- **Easy to use**
+```
+
+  Command -> Web API
+    ^           |
+    |           v
+   Action -> Command -> Store -> View
+     ^                             |
+     |_____________________________|
+
+```
+
+-- **Less defination**
+-- **Easy to test**
+-- **Easy to use**
 
 ## Dependencies
 
@@ -26,14 +37,8 @@ $ npm i --save actionizer
 import 'babel-polyfill';
 import axios from 'axios';
 import { fromJS } from 'immutable';
-import {
-  createStore,
-  select,
-  call,
-  put,
-  fork,
-  cancel
-} from 'actionizer';
+import { createStore } from 'actionizer';
+import { select, call, put, fork, cancel } from 'actionizer/commands';
 import debounce from 'lodash.debounce';
 
 const initialState = fromJS({
@@ -98,7 +103,7 @@ const unsubscribe = store.subscribe((state) => {
   console.log(`listener: ${state.get("counter")}`);
 });
 
-// Trigger an action.
+// Dispatch "Action".
 store.dispatch(count(100));
 
 // => listener: 100
@@ -138,8 +143,8 @@ const action = count(1);
 #### `getState()`
 Get store's state.
 
-### Effect API
-"Effects" return a payload used in "Action Creator".
+### Command API
+"Command" return a payload used in "Action Creator".
 
 #### `select()`
 `select` returns store's current state.
