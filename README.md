@@ -17,10 +17,6 @@ This is just pub/sub for data flow like Redux.
 
 ```
 
-- **Less defination**
-- **Easy to test**
-- **Easy to use**
-
 ## Dependencies
 
 `babel-polyfill` for ES2015 generator.
