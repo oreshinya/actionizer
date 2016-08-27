@@ -1,6 +1,6 @@
 {
   "name": "actionizer",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Simple pub/sub for data flow.",
   "main": "lib/index.js",
   "files": [
