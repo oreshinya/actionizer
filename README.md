@@ -142,8 +142,8 @@ Get store's state.
 ### Command API
 "Command" return a payload used in "Action Creator".
 
-#### `select(selector = (state) => state)`
-`select` calls `selector` with current state, and return `selector` result.
+#### `select()`
+`select` returns current state.
 
 #### `put(nextState)`
 `put` sets next state to store and returns it.
