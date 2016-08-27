@@ -9,8 +9,8 @@ This is just pub/sub for data flow like Redux.
 ```
 
   Command -> Web API
-    ^           |
-    |           v
+    ^  _________|
+    |  v
    Action -> Command -> Store -> View
      ^                             |
      |_____________________________|
