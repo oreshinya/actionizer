@@ -51,7 +51,7 @@ export default (initialState, notify = (emit) => { emit(); }) => {
 
       switch (value.type) {
         case SELECT:
-          step(action.next(value.selector(state)));
+          step(action.next(state));
           break;
         case PUT:
           setState(value.nextState);
