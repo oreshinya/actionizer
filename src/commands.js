@@ -19,5 +19,3 @@ export function fork(actionCreator, ...args) {
 export function cancel(actionId) {
   return { type: CANCEL, actionId };
 };
-
-
