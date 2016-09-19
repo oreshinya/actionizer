@@ -1,3 +1,4 @@
 import createStore from './createStore';
+import compose from './compose';
 
-export { createStore };
+export { createStore, compose };
