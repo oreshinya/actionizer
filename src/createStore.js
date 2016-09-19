@@ -1,11 +1,11 @@
 import EventEmitter from 'eventemitter3';
 import uuid from 'node-uuid';
 
-import { PUT, CALL, FORK, CANCEL, SELECT } from './CommandTypes';
+import { CALL, FORK, REDUCE, CANCEL, SELECT } from './CommandTypes';
 
 const EMIT = 'ACTIONIZER.EMITTER.NOTIFY';
 
-export default (initialState, notify = (emit) => { emit(); }) => {
+export default function(initialState, notify = (emit) => { emit(); }) {
   let state = initialState;
   const emitter = new EventEmitter();
   const processes = {};
@@ -24,9 +24,11 @@ export default (initialState, notify = (emit) => { emit(); }) => {
   };
 
   const setState = (nextState) => {
-    if (state === nextState) { return; }
-    state = nextState;
-    notify(emit);
+    if (state !== nextState) {
+      state = nextState;
+      notify(emit);
+    }
+    return state;
   };
 
   const openProcess = (action) => {
@@ -51,11 +53,10 @@ export default (initialState, notify = (emit) => { emit(); }) => {
 
       switch (value.type) {
         case SELECT:
-          step(action.next(state));
+          step(action.next(value.selector(state)));
           break;
-        case PUT:
-          setState(value.nextState);
-          step(action.next(state));
+        case REDUCE:
+          step(action.next(setState(value.reducer(state))));
           break;
         case CALL:
           value

@@ -8,12 +8,12 @@ This is just pub/sub for data flow like Redux.
 
 ```
 
-  Command -> Web API
+  Command -> (Web API)
     ^  _________|
     |  v
-   Action -> Command -> Store -> View
-     ^                             |
-     |_____________________________|
+   Action -> Command -> (Reducer) -> Store -> View
+     ^                                         |
+     |_________________________________________|
 
 ```
 
@@ -34,7 +34,7 @@ import 'babel-polyfill';
 import axios from 'axios';
 import { fromJS } from 'immutable';
 import { createStore } from 'actionizer';
-import { select, call, put, fork, cancel } from 'actionizer/commands';
+import { select, call, reduce, fork, cancel } from 'actionizer/commands';
 import debounce from 'lodash.debounce';
 
 const initialState = fromJS({
@@ -55,9 +55,9 @@ const store = createStore(initialState, notify);
 const count = function*(num) {
   // Get current state.
   const state = yield select();
-  const nextState = state.set("counter", num);
-  // Set next state.
-  yield put(nextState);
+
+  // Update state by "Reducer"
+  yield reduce((state) => state.set('counter', num));
 }
 
 // API request.
@@ -96,7 +96,7 @@ const searchItemsById = function*(id) {
 
 // Subscribe store's change.
 const unsubscribe = store.subscribe((state) => {
-  console.log(`listener: ${state.get("counter")}`);
+  console.log(`listener: ${state.get('counter')}`);
 });
 
 // Dispatch "Action".
@@ -125,11 +125,7 @@ In Actionizer, "Action" is a generator like:
 ```javascript
 // This is "Action Creator"
 const count = function*(num) {
-  // Get current state.
-  const state = yield select();
-  const nextState = state.set("counter", num);
-  // Set next state.
-  yield put(nextState);
+  yield reduce((state) => state.set('counter', num));
 }
 
 // This is "Action"
@@ -142,11 +138,11 @@ Get store's state.
 ### Command API
 "Command" return a payload used in "Action Creator".
 
-#### `select()`
-`select` returns current state.
+#### `select(selector = (state) => state)`
+`select` calls `selector` with current state, and return `selector` result.
 
-#### `put(nextState)`
-`put` sets next state to store and returns it.
+#### `reduce(reducer)`
+`reduce` updates state by result of `reducer`.
 
 #### `call(fn, ...args)`
 `call` calls `fn` with `args`.

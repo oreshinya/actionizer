@@ -1,22 +1,22 @@
-import { PUT, CALL, FORK, CANCEL, SELECT } from './CommandTypes';
+import { CALL, FORK, REDUCE, CANCEL, SELECT } from './CommandTypes';
 
-export const select = () => {
-  return { type: SELECT };
+export function select(selector = (state) => state) {
+  return { type: SELECT, selector };
 };
 
-export const put = (nextState) => {
-  return { type: PUT, nextState };
+export function reduce(reducer) {
+  return { type: REDUCE, reducer };
 };
 
-export const call = (fn, ...args) => {
+export function call(fn, ...args) {
   return { type: CALL, fn, args };
 };
 
-export const fork = (actionCreator, ...args) => {
+export function fork(actionCreator, ...args) {
   return { type: FORK, actionCreator, args };
 };
 
-export const cancel = (actionId) => {
+export function cancel(actionId) {
   return { type: CANCEL, actionId };
 };
 
