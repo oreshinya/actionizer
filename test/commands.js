@@ -1,7 +1,7 @@
 import assert from 'power-assert';
 import { test } from 'eater/runner';
 
-import { select, put, call, fork, cancel } from '../src/commands';
+import { select, reduce, call, fork, cancel } from '../src/commands';
 
 const selector = (state) => state;
 const selectPayload = select(selector);
@@ -11,11 +11,12 @@ test('"select" returns select payload', () => {
   assert(selectPayload.selector === selector);
 });
 
-const putPayload = put(1);
+const reducer = (state) => ({...state});
+const reducePayload = reduce(reducer);
 
-test('"put" returns put payload', () => {
-  assert(putPayload.type === 'ACTIONIZER.COMMAND.PUT');
-  assert(putPayload.nextState === 1);
+test('"reduce" returns reduce payload', () => {
+  assert(reducePayload.type === 'ACTIONIZER.COMMAND.REDUCE');
+  assert(reducePayload.reducer === reducer);
 });
 
 const asyncFn = () => {

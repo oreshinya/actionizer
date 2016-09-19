@@ -1,11 +1,11 @@
-import { PUT, CALL, FORK, CANCEL, SELECT } from './CommandTypes';
+import { CALL, FORK, REDUCE, CANCEL, SELECT } from './CommandTypes';
 
 export const select = (selector = (state) => state) => {
   return { type: SELECT, selector };
 };
 
-export const put = (nextState) => {
-  return { type: PUT, nextState };
+export const reduce = (reducer) => {
+  return { type: REDUCE, reducer };
 };
 
 export const call = (fn, ...args) => {

@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { Map } from 'immutable';
 
 import { createStore } from '../src';
-import { select, call, put, cancel, fork } from '../src/commands';
+import { select, call, reduce, cancel, fork } from '../src/commands';
 
 const initialState = Map({
   flag: false,
@@ -14,8 +14,7 @@ const initialState = Map({
 const store = createStore(initialState);
 
 const toggle = function*(nextFlag) {
-  const state = yield select();
-  yield put(state.set("flag", nextFlag));
+  yield reduce((state) => state.set('flag', nextFlag));
 }
 
 test('getState', () => {
@@ -34,30 +33,29 @@ test('dispatch', () => {
 
   const asyncSuccess = function*() {
     const result = yield call(sleep);
-    let state = yield select();
-    state = yield put(state.set('sleepResult', result));
+    const state = yield reduce((state) => state.set('sleepResult', result));
     assert(state.get('sleepResult') === 100);
+    const selected = yield select((state) => state.get('sleepResult'));
+    assert(selected === 100);
   }
 
   const asyncFailure = function*() {
     try {
       const result = yield call(sleep, true);
     } catch(e) {
-      let state = yield select();
-      state = yield put(state.set('sleepResult', e));
+      const state = yield reduce((state) => state.set('sleepResult', e));
       assert(state.get('sleepResult') === 99);
     }
   }
 
   const childAction = function*() {
-    let state = yield select();
-    state = yield put(state.set('childResult', 'child'));
+    const state = yield reduce((state) => state.set('childResult', 'child'));
     return state;
   }
 
   const parentAction = function*() {
-    let state = yield* childAction();
-    state = yield put(state.set('parentResult', 'parent'));
+    yield* childAction();
+    const state = yield reduce((state) => state.set('parentResult', 'parent'));
     assert(state.get('parentResult') === 'parent');
     assert(state.get('childResult') === 'child');
   }
@@ -65,8 +63,7 @@ test('dispatch', () => {
   let actionId = null;
   const countAction = function*() {
     yield call(sleep);
-    let state = yield select();
-    state = yield put(state.set('count', state.get('count') + 1));
+    const state = yield reduce((state) => state.set('count', state.get('count') + 1));
     assert(state.get('count') === 1);
   }
   const takeLatestAction = function*() {
