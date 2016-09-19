@@ -1,6 +1,6 @@
 import assert from 'power-assert';
 
-import compose from '../src/compose';
+import { compose } from '../src';
 
 const dbl = (n) => n * 2;
 const incr = (n) => n + 1;
