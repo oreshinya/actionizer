@@ -113,6 +113,9 @@ unsubscribe();
 #### `createStore(initialState, notify)`
 Create a store.
 
+#### `compose(...funcs)`
+Composes functions from right to left.
+
 ### Store API
 #### `subscribe(listener)`
 Register a listener of store's changes.
