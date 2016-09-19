@@ -5,7 +5,7 @@ import { CALL, FORK, REDUCE, CANCEL, SELECT } from './CommandTypes';
 
 const EMIT = 'ACTIONIZER.EMITTER.NOTIFY';
 
-export default (initialState, notify = (emit) => { emit(); }) => {
+export default function(initialState, notify = (emit) => { emit(); }) {
   let state = initialState;
   const emitter = new EventEmitter();
   const processes = {};
