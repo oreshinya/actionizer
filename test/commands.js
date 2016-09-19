@@ -3,10 +3,12 @@ import { test } from 'eater/runner';
 
 import { select, put, call, fork, cancel } from '../src/commands';
 
-const selectPayload = select();
+const selector = (state) => state;
+const selectPayload = select(selector);
 
 test('"select" returns select payload', () => {
   assert(selectPayload.type === 'ACTIONIZER.COMMAND.SELECT');
+  assert(selectPayload.selector === selector);
 });
 
 const putPayload = put(1);

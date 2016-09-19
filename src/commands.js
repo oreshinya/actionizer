@@ -1,7 +1,7 @@
 import { PUT, CALL, FORK, CANCEL, SELECT } from './CommandTypes';
 
-export const select = () => {
-  return { type: SELECT };
+export const select = (selector = (state) => state) => {
+  return { type: SELECT, selector };
 };
 
 export const put = (nextState) => {
