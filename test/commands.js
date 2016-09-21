@@ -12,11 +12,13 @@ test('"select" returns select payload', () => {
 });
 
 const reducer = (state) => ({...state});
-const reducePayload = reduce(reducer);
+const reducePayload = reduce(reducer, 1, 2);
 
 test('"reduce" returns reduce payload', () => {
   assert(reducePayload.type === 'ACTIONIZER.COMMAND.REDUCE');
   assert(reducePayload.reducer === reducer);
+  assert(reducePayload.args[0] === 1);
+  assert(reducePayload.args[1] === 2);
 });
 
 const asyncFn = () => {

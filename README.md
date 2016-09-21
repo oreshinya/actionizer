@@ -51,13 +51,16 @@ const notify = debounce((emit) => { emit(); });
 // Create "Store", it treats states for the app.
 const store = createStore(initialState, notify);
 
+// Define "Reducer"
+const setCount = (state, num) => state.set('counter', num);
+
 // Define "Action Creator".
 const count = function*(num) {
   // Get current state.
   const state = yield select();
 
   // Update state by "Reducer"
-  yield reduce((state) => state.set('counter', num));
+  yield reduce(setCount, num);
 }
 
 // API request.
@@ -128,7 +131,7 @@ In Actionizer, "Action" is a generator like:
 ```javascript
 // This is "Action Creator"
 const count = function*(num) {
-  yield reduce((state) => state.set('counter', num));
+  yield reduce(setCount, num);
 }
 
 // This is "Action"
@@ -144,7 +147,7 @@ Get store's state.
 #### `select(selector = (state) => state)`
 `select` calls `selector` with current state, and return `selector` result.
 
-#### `reduce(reducer)`
+#### `reduce(reducer, ...args)`
 `reduce` updates state by result of `reducer`.
 
 #### `call(fn, ...args)`

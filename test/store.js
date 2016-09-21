@@ -33,7 +33,7 @@ test('dispatch', () => {
 
   const asyncSuccess = function*() {
     const result = yield call(sleep);
-    const state = yield reduce((state) => state.set('sleepResult', result));
+    const state = yield reduce((state, sleepResult) => state.set('sleepResult', sleepResult), result);
     assert(state.get('sleepResult') === 100);
     const selected = yield select((state) => state.get('sleepResult'));
     assert(selected === 100);
@@ -43,7 +43,7 @@ test('dispatch', () => {
     try {
       const result = yield call(sleep, true);
     } catch(e) {
-      const state = yield reduce((state) => state.set('sleepResult', e));
+      const state = yield reduce((state, sleepResult) => state.set('sleepResult', sleepResult), e);
       assert(state.get('sleepResult') === 99);
     }
   }

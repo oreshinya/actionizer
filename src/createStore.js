@@ -56,7 +56,7 @@ export default function(initialState, notify = (emit) => { emit(); }) {
           step(action.next(value.selector(state)));
           break;
         case REDUCE:
-          step(action.next(setState(value.reducer(state))));
+          step(action.next(setState(value.reducer(state, ...value.args))));
           break;
         case CALL:
           value

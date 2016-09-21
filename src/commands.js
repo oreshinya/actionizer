@@ -4,8 +4,8 @@ export function select(selector = (state) => state) {
   return { type: SELECT, selector };
 }
 
-export function reduce(reducer) {
-  return { type: REDUCE, reducer };
+export function reduce(reducer, ...args) {
+  return { type: REDUCE, reducer, args };
 }
 
 export function call(fn, ...args) {
