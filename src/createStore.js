@@ -86,4 +86,4 @@ export default function(initialState, notify = (emit) => { emit(); }) {
     getState,
     dispatch
   };
-};
+}
