@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "prepublish": "rm -rf lib && babel src -d lib",
+    "lint": "eslint src",
     "test": "eater"
   },
   "repository": {
@@ -31,12 +32,14 @@
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
+    "babel-eslint": "^6.1.2",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-power-assert": "^1.0.0",
     "babel-preset-stage-1": "^6.5.0",
     "babel-register": "^6.9.0",
     "eater": "^3.0.0-4",
+    "eslint": "^3.6.1",
     "immutable": "^3.8.1",
     "power-assert": "^1.4.1",
     "sinon": "^1.17.4"
