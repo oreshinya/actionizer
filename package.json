@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "eventemitter3": "^1.2.0",
-    "node-uuid": "^1.4.7"
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
