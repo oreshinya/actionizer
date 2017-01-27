@@ -125,7 +125,7 @@ Composes functions from right to left.
 Register a listener of store's changes.
 And it returns unsubscriber.
 
-#### `dispatch(action)`
+#### `dispatch(action, callback)`
 Trigger an action.
 In Actionizer, "Action" is a generator like:
 
