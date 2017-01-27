@@ -1,4 +1,4 @@
-import { CALL, FORK, REDUCE, CANCEL, SELECT } from './CommandTypes';
+import { CALL, FORK, REDUCE, CANCEL, SELECT, DELEGATE } from './CommandTypes';
 
 export function select(selector = (state) => state) {
   return { type: SELECT, selector };
@@ -14,6 +14,10 @@ export function call(fn, ...args) {
 
 export function fork(actionCreator, ...args) {
   return { type: FORK, actionCreator, args };
+}
+
+export function delegate(actionCreator, ...args) {
+  return { type: DELEGATE, actionCreator, args };
 }
 
 export function cancel(actionId) {

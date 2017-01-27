@@ -1,7 +1,7 @@
 import EventEmitter from 'eventemitter3';
 import uuid from 'uuid';
 
-import { CALL, FORK, REDUCE, CANCEL, SELECT } from './CommandTypes';
+import { CALL, FORK, REDUCE, CANCEL, SELECT, DELEGATE } from './CommandTypes';
 
 const EMIT = 'ACTIONIZER.EMITTER.NOTIFY';
 
@@ -43,13 +43,17 @@ export default function(initialState, notify = (emit) => { emit(); }) {
     delete processes[actionId];
   };
 
-  const dispatch = (action) => {
+  const dispatch = (action, callback) => {
     const actionId = openProcess(action);
 
     const step = (result) => {
       const { done, value } = result;
 
-      if (done) { return closeProcess(actionId); }
+      if (done) {
+        if (callback) { callback(value); }
+        closeProcess(actionId);
+        return;
+      }
 
       switch (value.type) {
         case SELECT:
@@ -66,6 +70,9 @@ export default function(initialState, notify = (emit) => { emit(); }) {
           break;
         case FORK:
           step(action.next(dispatch(value.actionCreator(...value.args))));
+          break;
+        case DELEGATE:
+          dispatch(value.actionCreator(...value.args), (val) => step(action.next(val)));
           break;
         case CANCEL:
           closeProcess(value.actionId);
