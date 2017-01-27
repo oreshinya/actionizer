@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { Map } from 'immutable';
 
 import { createStore } from '../src';
-import { select, call, reduce, cancel, fork } from '../src/commands';
+import { select, call, reduce, cancel, fork, delegate } from '../src/commands';
 
 const initialState = Map({
   flag: false,
@@ -48,16 +48,16 @@ test('dispatch', () => {
     }
   }
 
-  const childAction = function*() {
-    const state = yield reduce((state) => state.set('childResult', 'child'));
-    return state;
+  const childAction = function*(num) {
+    yield reduce((state) => state.set('childResult', num));
+    return num * 2;
   }
 
   const parentAction = function*() {
-    yield* childAction();
-    const state = yield reduce((state) => state.set('parentResult', 'parent'));
-    assert(state.get('parentResult') === 'parent');
-    assert(state.get('childResult') === 'child');
+    const result = yield delegate(childAction, 7);
+    const state = yield reduce((state) => state.set('parentResult', result));
+    assert(state.get('parentResult') === 14);
+    assert(state.get('childResult') === 7);
   }
 
   let actionId = null;

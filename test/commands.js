@@ -1,56 +1,67 @@
 import assert from 'power-assert';
 import { test } from 'eater/runner';
 
-import { select, reduce, call, fork, cancel } from '../src/commands';
-
-const selector = (state) => state;
-const selectPayload = select(selector);
+import { select, reduce, call, fork, cancel, delegate } from '../src/commands';
 
 test('"select" returns select payload', () => {
-  assert(selectPayload.type === 'ACTIONIZER.COMMAND.SELECT');
-  assert(selectPayload.selector === selector);
-});
+  const selector = (state) => state;
+  const payload = select(selector);
 
-const reducer = (state) => ({...state});
-const reducePayload = reduce(reducer, 1, 2);
+  assert(payload.type === 'ACTIONIZER.COMMAND.SELECT');
+  assert(payload.selector === selector);
+});
 
 test('"reduce" returns reduce payload', () => {
-  assert(reducePayload.type === 'ACTIONIZER.COMMAND.REDUCE');
-  assert(reducePayload.reducer === reducer);
-  assert(reducePayload.args[0] === 1);
-  assert(reducePayload.args[1] === 2);
-});
+  const reducer = (state) => ({...state});
+  const payload = reduce(reducer, 1, 2);
 
-const asyncFn = () => {
-  return new Promise((resolve) => {
-    resolve();
-  });
-};
-const callPayload = call(asyncFn, 1, 2, 3);
+  assert(payload.type === 'ACTIONIZER.COMMAND.REDUCE');
+  assert(payload.reducer === reducer);
+  assert(payload.args[0] === 1);
+  assert(payload.args[1] === 2);
+});
 
 test('"call" returns call payload', () => {
-  assert(callPayload.type === 'ACTIONIZER.COMMAND.CALL');
-  assert(callPayload.fn === asyncFn);
-  assert(callPayload.args[0] === 1);
-  assert(callPayload.args[1] === 2);
-  assert(callPayload.args[2] === 3);
-});
+  const asyncFn = () => {
+    return new Promise((resolve) => {
+      resolve();
+    });
+  };
+  const payload = call(asyncFn, 1, 2, 3);
 
-const actionCreator = function*() {};
-const forkPayload = fork(actionCreator, 1, 2, 3);
+  assert(payload.type === 'ACTIONIZER.COMMAND.CALL');
+  assert(payload.fn === asyncFn);
+  assert(payload.args[0] === 1);
+  assert(payload.args[1] === 2);
+  assert(payload.args[2] === 3);
+});
 
 test('"fork" returns fork payload', () => {
-  assert(forkPayload.type === 'ACTIONIZER.COMMAND.FORK');
-  assert(forkPayload.actionCreator === actionCreator);
-  assert(forkPayload.args[0] === 1);
-  assert(forkPayload.args[1] === 2);
-  assert(forkPayload.args[2] === 3);
+  const actionCreator = function*() {};
+  const payload = fork(actionCreator, 1, 2, 3);
+
+  assert(payload.type === 'ACTIONIZER.COMMAND.FORK');
+  assert(payload.actionCreator === actionCreator);
+  assert(payload.args[0] === 1);
+  assert(payload.args[1] === 2);
+  assert(payload.args[2] === 3);
 });
 
-const actionId = 'testActionId';
-const cancelPayload = cancel(actionId);
-
 test('"cancel" returns cancel payload', () => {
-  assert(cancelPayload.type === 'ACTIONIZER.COMMAND.CANCEL');
-  assert(cancelPayload.actionId === actionId);
+  const actionId = 'testActionId';
+  const payload = cancel(actionId);
+  assert(payload.type === 'ACTIONIZER.COMMAND.CANCEL');
+  assert(payload.actionId === actionId);
+});
+
+
+test('"delegate" returns delegate payload', () => {
+  const actionCreator = function*() {};
+  const payload = delegate(actionCreator, 1, 2, 3);
+
+  assert(payload.type === 'ACTIONIZER.COMMAND.DELEGATE');
+  assert(payload.actionCreator === actionCreator);
+  assert(payload.args[0] === 1);
+  assert(payload.args[1] === 2);
+  assert(payload.args[2] === 3);
 });
