@@ -34,7 +34,7 @@ import 'babel-polyfill';
 import axios from 'axios';
 import { fromJS } from 'immutable';
 import { createStore } from 'actionizer';
-import { select, call, reduce, fork, cancel } from 'actionizer/commands';
+import { select, call, reduce, fork, cancel, delegate } from 'actionizer/commands';
 import debounce from 'lodash.debounce';
 
 const initialState = fromJS({
@@ -89,7 +89,8 @@ const sleep = (ms) => {
 // Define debounced "Action Creator".
 const debouncedFetchItems = function*(id) {
   yield call(sleep, 1000);
-  yield* fetchItems(id);
+  // Delegate other action creator
+  yield delegate(fetchItems, id);
 }
 let actionId;
 const searchItemsById = function*(id) {
@@ -158,6 +159,9 @@ Get store's state.
 #### `fork(actionCreator, ...args)`
 `fork` calls an action without blocking and returns action id.
 Action id is unique.
+
+#### `delegate(actionCreator, ...args)`
+`delegate` delegates process to other action by calling action creator.
 
 #### `cancel(actionId)`
 `cancel` cancels action by action id.
