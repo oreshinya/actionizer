@@ -71,11 +71,28 @@ test('dispatch', () => {
     actionId = yield fork(countAction);
   }
 
+  const errorAction = function*() {
+    yield reduce((s) => s.set('foo', 'set'));
+    unknownFunc();
+  }
+  const errorCatchAction = function*() {
+    let t = 1;
+    const state = yield select();
+    try {
+      yield delegate(errorAction);
+    } catch (e) {
+      t = 2;
+    } finally {
+      assert(t === 2);
+    }
+  }
+
   store.dispatch(asyncSuccess());
   store.dispatch(asyncFailure());
   store.dispatch(parentAction());
   store.dispatch(takeLatestAction());
   store.dispatch(takeLatestAction());
+  store.dispatch(errorCatchAction());
 });
 
 test('subscribe', () => {

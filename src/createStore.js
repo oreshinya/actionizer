@@ -84,7 +84,11 @@ export default function(initialState, notify = (emit) => { emit(); }) {
       }
     };
 
-    step(action.next());
+    try {
+      step(action.next());
+    } catch (e) {
+      step(action.throw(e));
+    }
     return actionId;
   };
 
