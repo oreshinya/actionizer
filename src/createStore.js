@@ -50,8 +50,8 @@ export default function(initialState, notify = (emit) => { emit(); }) {
       const { done, value } = result;
 
       if (done) {
-        if (callback) { callback(value); }
         closeProcess(actionId);
+        if (callback) { callback(value); }
         return;
       }
 
